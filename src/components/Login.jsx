@@ -3,10 +3,12 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import BASE_URL from "../utils/constants";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
     const [email, setEmail] = useState("virat@gmail.com");
     const [password, setPassword] = useState("Virat@123");
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
@@ -15,6 +17,7 @@ const Login = () => {
                 { withCredentials: true }
             );
             dispatch(addUser(res.data));
+            navigate("/");
         }
         catch (err) {
             console.log("Error: ", err.message);
