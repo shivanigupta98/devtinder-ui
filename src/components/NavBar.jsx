@@ -31,9 +31,9 @@ const NavBar = () => {
         <div className="dropdown dropdown-end mx-5">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src={user.photoUrl} />
+             {user.photoUrl && <img
+                alt="photo"
+                src={user.photoUrl} />}
             </div>
           </div>
           <ul
