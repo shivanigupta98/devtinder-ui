@@ -9,8 +9,13 @@ const Connections = () => {
     const connections = useSelector((store) => store.connections);
     const getConnections = async () => {
 
-        const res = await axios.get(BASE_URL + "/user/connections", { withCredentials: true });
-        dispatch(addConnections(res.data.data));
+        try {
+            const res = await axios.get(BASE_URL + "/user/connections", { withCredentials: true });
+            dispatch(addConnections(res.data.data));
+        }
+        catch (err) {
+            console.log(err.message);
+        }
     }
     useEffect(() => {
         getConnections();
@@ -19,7 +24,7 @@ const Connections = () => {
         return;
     if (connections.length === 0) {
         return (
-            <div className="my-10">
+            <div className="my-10 flex justify-center">
                 <ul className="list bg-base-300 rounded-box shadow-md w-1/2">
                     <li className="p-4 pb-2 text-xl text-black opacity-60">No Connections Found!</li>
                 </ul></div>
@@ -30,10 +35,10 @@ const Connections = () => {
             <ul className="list bg-base-300 rounded-box shadow-md w-1/2">
                 <li className="p-4 pb-2 text-xl text-black opacity-60">Your Connections</li>
 
-                {connections.map((connection, index) => {
-                    const { firstName, lastName, age, gender, about, photoUrl } = connection;
+                {connections.map((connection) => {
+                    const { _id, firstName, lastName, age, gender, about, photoUrl } = connection;
                     return (
-                        <li className="list-row" key={index}>
+                        <li className="list-row" key={_id}>
                             <div>
                                 <img
                                     className="size-10 rounded-box"
@@ -44,8 +49,8 @@ const Connections = () => {
                             <div>
                                 <div>{firstName} {lastName}</div>
                                 <div className="text-xs uppercase font-semibold opacity-60">
-                                    <div>{about || "No details provided"}</div>                             
-                                {age && gender && <div>{age}, {gender}</div>}
+                                    <div>{about || "No details provided"}</div>
+                                    {age && gender && <div>{age}, {gender}</div>}
                                 </div>
                             </div>
                         </li>
