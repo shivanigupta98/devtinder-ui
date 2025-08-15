@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequests } from "../utils/requestsSlice";
+import { addRequests, removeRequests } from "../utils/requestsSlice";
 import { useEffect } from "react";
 import BASE_URL from "../utils/constants";
 
@@ -30,6 +30,17 @@ const Requests = () => {
                 </ul></div>
         )
     }
+    const reviewRequest = async (status, _id) => {
+        try
+        {
+            const res = await axios.post(BASE_URL + "/request/review/" + status + "/" + _id,
+            {}, { withCredentials: true });
+            dispatch(removeRequests(_id));
+        }
+        catch(err){
+            console.log(err.message);
+        }
+    }
     return (
         <div className="my-10 flex justify-center">
             <ul className="list bg-base-300 rounded-box shadow-md w-2/3">
@@ -38,7 +49,7 @@ const Requests = () => {
                 {requests.map((request) => {
                     const { _id, firstName, lastName, age, gender, about, photoUrl } = request.fromUserId;
                     return (
-                        <div  key={_id}>
+                        <div key={_id}>
                             <li className="list-row">
                                 <div>
                                     <img
@@ -54,12 +65,12 @@ const Requests = () => {
                                         {age && gender && <div>{age}, {gender}</div>}
                                     </div>
                                 </div>
-                                 <div className="flex justify-center gap-2">
-                            <button className="btn btn-primary">Reject</button>
-                            <button className="btn btn-secondary">Accept</button>
-                            </div>
+                                <div className="flex justify-center gap-2">
+                                    <button className="btn btn-primary" onClick={()=>reviewRequest("rejected",request._id)}>Reject</button>
+                                    <button className="btn btn-secondary">Accept</button>
+                                </div>
                             </li>
-                           
+
                         </div>
                     );
                 })}
