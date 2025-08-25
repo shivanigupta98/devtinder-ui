@@ -11,7 +11,6 @@ const Requests = () => {
         try {
             const res = await axios.get(BASE_URL + "/user/request/received", { withCredentials: true });
             dispatch(addRequests(res.data.data));
-            console.log(res.data.data);
         }
         catch (err) {
             console.log(err.message);
@@ -67,7 +66,7 @@ const Requests = () => {
                                 </div>
                                 <div className="flex justify-center gap-2">
                                     <button className="btn btn-primary" onClick={()=>reviewRequest("rejected",request._id)}>Reject</button>
-                                    <button className="btn btn-secondary">Accept</button>
+                                    <button className="btn btn-secondary" onClick={()=>reviewRequest("accepted",request._id)}>Accept</button>
                                 </div>
                             </li>
 
